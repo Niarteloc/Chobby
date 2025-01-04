@@ -428,7 +428,7 @@ local function LoadGame(saveData, refreshGUI)
 		ResetGamedata()
 		gamedata = Spring.Utilities.MergeTable(saveData, gamedata, true)
 
-		if not gamedata.campaignID then
+		if not gamedata.roguelikeID then
 			GenerateRoguelikeID()
 		end
 
@@ -500,7 +500,7 @@ local function LoadRoguelikeData()
 
 	-- try loading save whose name is stored in config (this should be the last save we played)
 	if Configuration.roguelikeSaveFile then
-		Spring.Echo("Roguelike Data", "Config save file: " .. Configuration.campaignSaveFile)
+		Spring.Echo("Roguelike Data", "Config save file: " .. Configuration.roguelikeSaveFile)
 		local saveData = saves[Configuration.roguelikeSaveFile]
 		if saveData then
 			Spring.Echo("Roguelike Data", "Save data found, loading")

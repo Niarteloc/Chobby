@@ -171,6 +171,7 @@ function Configuration:init()
 	self.campaignConfigName = "sample"
 	self.campaignConfig = VFS.Include("campaign/sample/mainConfig.lua")
 	self.campaignSaveFile = nil -- Set by user
+	self.roguelikeSaveFile = nil -- Set by user
 	self.nextCampaignSaveNumber = 1
 	self.campaignConfigOptions = {
 		"sample",
@@ -640,6 +641,7 @@ function Configuration:GetConfigData()
 		window_XResolutionWindowed = self.window_XResolutionWindowed,
 		window_YResolutionWindowed = self.window_YResolutionWindowed,
 		campaignSaveFile = self.campaignSaveFile,
+		roguelikeSaveFile = self.roguelikeSaveFile,
 		nextCampaignSaveNumber = self.nextCampaignSaveNumber,
 		steamReleasePopupSeen = self.steamReleasePopupSeen,
 		campaignConfigName = self.campaignConfigName,
