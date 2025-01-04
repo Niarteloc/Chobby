@@ -127,7 +127,7 @@ return {
             tabs = {
                 {
                     name = "unlocks",
-                    control = nil,
+                    control = WG.UnlockPanel.GetControl(),
                 },
                 {
                     name = "mission",

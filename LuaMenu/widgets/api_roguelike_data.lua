@@ -765,6 +765,12 @@ function externalFunctions.SetCommanderName(newName)
 	SaveGame()
 end
 
+function externalFunctions.UnlockRewards(rewardList)
+	if UnlockRewardSet(rewardList,false) then
+		SaveGame()
+	end
+end
+
 function externalFunctions.SetRoguelikeInitializationComplete()
 	if not gamedata.initializationComplete then
 		gamedata.initializationComplete = true
