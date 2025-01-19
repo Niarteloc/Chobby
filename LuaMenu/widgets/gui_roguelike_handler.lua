@@ -14,6 +14,47 @@ function widget:GetInfo()
 end
 
 local GALAXY_IMAGE = LUA_DIRNAME .. "images/MinimapThumbnailsRandom_Plateaus_v1.0.jpg"
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Ingame interface
+
+local BATTLE_WON_STRING = "Roguelike_BattleWon"
+local BATTLE_LOST_STRING = "Roguelike_BattleLost"
+local BATTLE_RESIGN_STRING = "Roguelike_BattleResign"
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+function widget:RecvLuaMsg(msg)
+    if not msg then
+        Spring.Echo("LUA_ERR", "Bad roguelike message", msg)
+        return
+    end
+    if string.find(msg, BATTLE_WON_STRING) then
+        Spring.Echo("msg", msg)
+        local data = msg:split(" ")
+        Spring.Utilities.TableEcho(data, "data")
+        local battleID = tonumber(data[2])
+        local battleFrames = tonumber(data[3])
+        local difficulty = tonumber(data[4]) or 0
+        local losses = tonumber(data[5]) or 10000000
+
+        WG.RoguelikeData.RecordWin()
+    elseif string.find(msg, BATTLE_LOST_STRING) then
+        Spring.Echo("msg", msg)
+        local data = msg:split(" ")
+        Spring.Utilities.TableEcho(data, "data")
+        local battleID = tonumber(data[2])
+        local battleFrames = tonumber(data[3])
+    elseif string.find(msg, BATTLE_RESIGN_STRING) then
+        Spring.Echo("msg", msg)
+        local data = msg:split(" ")
+        Spring.Utilities.TableEcho(data, "data")
+        local battleID = tonumber(data[2])
+        local battleFrames = tonumber(data[3])
+    end
+end
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 -- External Interface

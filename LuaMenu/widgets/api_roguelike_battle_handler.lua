@@ -313,7 +313,7 @@ local function StartBattleForReal(planetID, planetData)
 		fixedstartpos = 1,
 		init_terra_save_fix = gameConfig.initTerraSaveFix and "1" or "0",
 		planetmissiondifficulty = missionDifficulty,
-		singleplayercampaignbattleid = planetID,
+		roguelikebattleid = planetID,
 		initalterraform = TableToBase64(gameConfig.terraform),
 		planetmissionmapmarkers = TableToBase64(gameConfig.mapMarkers),
 		--campaignpartialsavedata = TableToBase64(WG.RoguelikeData.GetCampaignPartialSaveData()),

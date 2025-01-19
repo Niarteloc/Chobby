@@ -147,6 +147,7 @@ local function ResetGamedata()
 		victories = {},
         retinue = {}, -- Unused
 		initializationComplete = false,
+		unlockPoints = 0,
 	}
 end
 
@@ -769,6 +770,11 @@ function externalFunctions.UnlockRewards(rewardList)
 	if UnlockRewardSet(rewardList,false) then
 		SaveGame()
 	end
+end
+
+function externalFunctions.RecordWin()
+	gamedata.unlockPoints = gamedata.unlockPoints + 1
+	SaveGame()
 end
 
 function externalFunctions.SetRoguelikeInitializationComplete()
