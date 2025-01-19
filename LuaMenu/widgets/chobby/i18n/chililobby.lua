@@ -114,6 +114,8 @@ return {
 		team = "Team",
 		serverList = "Server List",
 		skirmish = "Skirmish",
+		roguelike = "Rogue-K",
+		unlock = "Unlock",
 		play_custom_multiplayer_game = "Play a custom multiplayer game",
 		queues = "Queues",
 		custom_games = "Custom games",
