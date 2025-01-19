@@ -30,6 +30,24 @@ local menuItems = {
 		control = WG.BattleRoomWindow.GetSingleplayerControl(VFS.Include(LUA_DIRNAME .. "configs/gameConfig/zk/singleplayerQuickSkirmish.lua")),
 		entryCheck = WG.BattleRoomWindow.SetSingleplayerGame,
 	},
+    {
+		name = "roguelike",
+        entryCheck = WG.RoguelikeSaveWindow.PromptInitialSaveName,
+        entryCheckBootMode = true,
+        submenuData = {
+            submenuControl = WG.RoguelikeHandler.GetControl(),
+            tabs = {
+                {
+                    name = "unlocks",
+                    control = WG.UnlockPanel.GetControl(),
+                },
+                {
+                    name = "mission",
+                    control = WG.RoguelikeHandler.GetMissionControl(),
+                },
+            },
+        },
+	},
 	{
 		name = "load",
 		control = WG.LoadGameWindow.GetControl(),
