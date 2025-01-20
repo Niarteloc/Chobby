@@ -111,21 +111,45 @@ local cloakPath={cloakBase,cloakT1,cloakT2,cloakT3}
 local shieldPath={shieldBase,shieldT1,shieldT2,shieldT3}
 local roverPath={roverBase,roverT1,roverT2,roverT3}
 
+local unlockLabel, left_pane, center_pane, right_pane, btnUnlockLeft, btnUnlockCenter, btnUnlockRight
+
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 -- Intitialize
 
+local function RefreshUnlockData()
+    local progression = WG.RoguelikeData.GetRoguelikeProgression()
+    local unlockPoints = WG.RoguelikeData.GetUnlockPoints()
+    Spring.Echo("unlock state: "..progression[1].." "..progression[2].." "..progression[3].." "..unlockPoints)
+    unlockLabel:SetCaption("Unlock Points: "..unlockPoints)
+    if unlockPoints <= 0 or progression[1] > 4 then
+        btnUnlockLeft:Hide()
+    else
+        btnUnlockLeft:Show()
+    end
+    if unlockPoints <= 0 or progression[2] > 4 then
+        btnUnlockCenter:Hide()
+    else
+        btnUnlockCenter:Show()
+    end
+    if unlockPoints <= 0 or progression[3] > 4 then
+        btnUnlockRight:Hide()
+    else
+        btnUnlockRight:Show()
+    end
+end
+
 local function InitializeControls(parentControl)
     local Configuration = WG.Chobby.Configuration
-    local progression = WG.RoguelikeData.GetRoguelikeProgression()
 
-    Label:New {
+
+    unlockLabel = Label:New {
         x = 20,
         right = 5,
         y = WG.TOP_LABEL_Y,
         height = 20,
         objectOverrideFont = Configuration:GetFont(3),
-        caption = i18n("technology"),
+        caption = "Unlock Points: " .. WG.RoguelikeData.GetUnlockPoints(),
         parent = parentControl
     }
 
@@ -145,7 +169,7 @@ local function InitializeControls(parentControl)
         parent = parentControl
     }
 
-    local left_pane = Window:New {
+    left_pane = Window:New {
         classname = "main_window",
         x = "2.5%",
         y = "20%",
@@ -157,26 +181,31 @@ local function InitializeControls(parentControl)
         parent = parentControl
 
     }
-    local btnUnlockLeft = Button:New {
+    btnUnlockLeft = Button:New {
         x = "34.5%",
         width = "32%",
         bottom = WG.TOP_BUTTON_Y,
         height = WG.BUTTON_HEIGHT,
         caption = i18n("unlock"),
         objectOverrideFont = Configuration:GetButtonFont(3),
-        classname = "negative_button",
+        classname = "positive_button",
         OnClick = {
             function()
-                WG.RoguelikeData.UnlockRewards(cloakPath[progression[1]])
-                progression[1] = progression[1] + 1
-                WG.RoguelikeData.UpdateProgression(progression)
+                local progression = WG.RoguelikeData.GetRoguelikeProgression()
+                local unlockPoints = WG.RoguelikeData.GetUnlockPoints()
+                if unlockPoints > 0 and progression[1] < 5 then
+                    WG.RoguelikeData.UnlockRewards(cloakPath[progression[1]])
+                    progression[1] = progression[1] + 1
+                    WG.RoguelikeData.UpdateProgression(progression)
+                end
+                RefreshUnlockData()
             end
         },
         parent = left_pane
     }
 
 
-    local center_pane = Window:New {
+    center_pane = Window:New {
         classname = "main_window",
         x = "35%",
         y = "20%",
@@ -188,26 +217,31 @@ local function InitializeControls(parentControl)
         parent = parentControl
 
     }
-    local btnUnlockCenter = Button:New {
+    btnUnlockCenter = Button:New {
         x = "34.5%",
         width = "32%",
         bottom = WG.TOP_BUTTON_Y,
         height = WG.BUTTON_HEIGHT,
         caption = i18n("unlock"),
         objectOverrideFont = Configuration:GetButtonFont(3),
-        classname = "negative_button",
+        classname = "positive_button",
         OnClick = {
             function()
-                WG.RoguelikeData.UnlockRewards(shieldPath[progression[2]])
-                progression[2] = progression[2] + 1
-                WG.RoguelikeData.UpdateProgression(progression)
+                local progression = WG.RoguelikeData.GetRoguelikeProgression()
+                local unlockPoints = WG.RoguelikeData.GetUnlockPoints()
+                if unlockPoints > 0 and progression[2] < 5 then
+                    WG.RoguelikeData.UnlockRewards(shieldPath[progression[2]])
+                    progression[2] = progression[2] + 1
+                    WG.RoguelikeData.UpdateProgression(progression)
+                end
+                RefreshUnlockData()
             end
         },
         parent = center_pane
     }
 
 
-    local right_pane = Window:New {
+    right_pane = Window:New {
         classname = "main_window",
         x = "67.5%",
         y = "20%",
@@ -219,24 +253,34 @@ local function InitializeControls(parentControl)
         parent = parentControl
 
     }
-    local btnUnlockRight = Button:New {
+    btnUnlockRight = Button:New {
         x = "34.5%",
         width = "32%",
         bottom = WG.TOP_BUTTON_Y,
         height = WG.BUTTON_HEIGHT,
         caption = i18n("unlock"),
         objectOverrideFont = Configuration:GetButtonFont(3),
-        classname = "negative_button",
+        classname = "positive_button",
         OnClick = {
             function()
-                WG.RoguelikeData.UnlockRewards(roverPath[progression[3]])
-                progression[3] = progression[3] + 1
-                WG.RoguelikeData.UpdateProgression(progression)
+                local progression = WG.RoguelikeData.GetRoguelikeProgression()
+                local unlockPoints = WG.RoguelikeData.GetUnlockPoints()
+                if unlockPoints > 0 and progression[3] < 5 then
+                    WG.RoguelikeData.UnlockRewards(roverPath[progression[3]])
+                    progression[3] = progression[3] + 1
+                    WG.RoguelikeData.UpdateProgression(progression)
+                end
+                RefreshUnlockData()
             end
         },
         parent = right_pane
     }
+
+    RefreshUnlockData()
 end
+
+
+
 
 local UnlockPanel = {}
 
@@ -252,6 +296,8 @@ function UnlockPanel.GetControl()
             function(obj)
                 if obj:IsEmpty() then
                     InitializeControls(obj)
+                else
+                    RefreshUnlockData()
                 end
             end
         },

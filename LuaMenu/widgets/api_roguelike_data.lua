@@ -147,7 +147,7 @@ local function ResetGamedata()
 		victories = {},
         retinue = {}, -- Unused
 		initializationComplete = false,
-		unlockPoints = 0,
+		unlockPoints = 1,
 		roguelikeProgression = {1,1,1}
 	}
 end
@@ -849,6 +849,10 @@ end
 
 function externalFunctions.GetRoguelikeProgression()
 	return gamedata.roguelikeProgression
+end
+
+function externalFunctions.GetUnlockPoints()
+	return gamedata.unlockPoints
 end
 
 function externalFunctions.UpdateProgression(progress)
