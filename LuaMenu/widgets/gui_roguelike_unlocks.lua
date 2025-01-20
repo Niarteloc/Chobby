@@ -112,10 +112,43 @@ local shieldPath={shieldBase,shieldT1,shieldT2,shieldT3}
 local roverPath={roverBase,roverT1,roverT2,roverT3}
 
 local unlockLabel, left_pane, center_pane, right_pane, btnUnlockLeft, btnUnlockCenter, btnUnlockRight
+local leftImageGrid={}
+local centerImageGrid={}
+local rightImageGrid={}
+local ICONS_DIR = LUA_DIRNAME .. "configs/gameConfig/zk/unitpics/"
 
+local REWARD_ICON_SIZE = 58
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 -- Intitialize
+local function drawUnlocks(panel, unlockTable, progressionCount,imageGrid)
+    for _, row in pairs(imageGrid) do
+        for _, image in pairs(row) do
+            image:Dispose()
+        end
+    end
+    local color = {0.5,0.5,0.5,0.5}
+    for i = 1, 4 do
+        imageGrid[i]={}
+        if i < progressionCount then
+            color = {1.0,1.0,1.0,1.0}
+        else
+            color = {0.5,0.5,0.5,0.5}
+        end
+        for j,unitname in ipairs(unlockTable[i].units) do
+            imageGrid[i][j] = Image:New{
+                x = -50+60*j,
+                y = -50+60*i,
+                width = REWARD_ICON_SIZE,
+                height = REWARD_ICON_SIZE,
+                keepAspect = true,
+                color = color,
+                file = ICONS_DIR..unitname..".png",
+                parent = panel,
+            }
+        end
+    end
+end
 
 local function RefreshUnlockData()
     local progression = WG.RoguelikeData.GetRoguelikeProgression()
@@ -137,7 +170,12 @@ local function RefreshUnlockData()
     else
         btnUnlockRight:Show()
     end
+    drawUnlocks(left_pane,cloakPath,progression[1],leftImageGrid)
+    drawUnlocks(center_pane,shieldPath,progression[2],centerImageGrid)
+    drawUnlocks(right_pane,roverPath,progression[3],rightImageGrid)
 end
+
+
 
 local function InitializeControls(parentControl)
     local Configuration = WG.Chobby.Configuration
