@@ -148,6 +148,7 @@ local function ResetGamedata()
         retinue = {}, -- Unused
 		initializationComplete = false,
 		unlockPoints = 0,
+		roguelikeProgression = {1,1,1}
 	}
 end
 
@@ -464,8 +465,8 @@ local function StartNewGame(overrideRoguelikeID)
 	--UnlockRewardSet(roguelikeConfig.initialUnlocks)
     UnlockRewardSet({
         units = {
-            "factorycloak",
-            "cloakraid",
+			"staticradar",
+			"turretlaser",
             "staticmex",
             "energysolar"
         },
@@ -844,6 +845,16 @@ end
 
 function externalFunctions.GetGamedataInATroublingWay()
 	return gamedata
+end
+
+function externalFunctions.GetRoguelikeProgression()
+	return gamedata.roguelikeProgression
+end
+
+function externalFunctions.UpdateProgression(progress)
+	gamedata.roguelikeProgression=progress
+	gamedata.unlockPoints = gamedata.unlockPoints - 1
+	SaveGame()
 end
 
 function externalFunctions.GetActiveRetinue()
